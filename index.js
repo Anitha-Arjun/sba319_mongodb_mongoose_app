@@ -4,7 +4,9 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 import productsRouter from "./routes/products.js";
 import ordersRouter from "./routes/orders.js";
+import reviewsRouter from "./routes/reviews.js"
 import mongoose, { mongo } from "mongoose";
+
 
 dotenv.config();
 const app = express();
@@ -31,6 +33,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/products/", productsRouter);
 app.use("/api/orders/", ordersRouter);
+app.use("/api/reviews/", reviewsRouter);
 
 //Error Middlewar
 // app.use((e, req, res, next) => {

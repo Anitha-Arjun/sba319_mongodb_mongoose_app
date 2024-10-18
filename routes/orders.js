@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
 /**
  * GET /api/orders/:id
  */
-router.get("/:id", async (req, res) => {
+router.get("/:id", async (req, res, next) => {
   try {
     const orderById = await Order.findById(req.params.id);
 
@@ -25,7 +25,7 @@ router.get("/:id", async (req, res) => {
     } else {
       res.status(404).json(`${req.params.id} is not found`);
     }
-  } catch (e) {
+  } catch (error) {
     console.log(`Error invalid id: ${req.params.id}`);
   }
 });

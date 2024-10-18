@@ -6,7 +6,7 @@ const reviewSchema = new mongoose.Schema({
     required: true,
   },
   rating: {
-    type: mongoose.Types.Decimal128,
+    type: String,
   },
   comment: {
     type: String,
@@ -17,5 +17,5 @@ const reviewSchema = new mongoose.Schema({
   },
 });
 
-const Review = new mongoose.model("Review", "reviewSchema");
+const Review = new mongoose.model("Review", reviewSchema);
 export default Review;
