@@ -1,12 +1,10 @@
 import express from "express";
 import morgan from "morgan";
-// import mongoose from "mongoose";
 import dotenv from "dotenv";
 import productsRouter from "./routes/products.js";
 import ordersRouter from "./routes/orders.js";
-import reviewsRouter from "./routes/reviews.js"
+import reviewsRouter from "./routes/reviews.js";
 import mongoose, { mongo } from "mongoose";
-
 
 dotenv.config();
 const app = express();
@@ -35,8 +33,8 @@ app.use("/api/products/", productsRouter);
 app.use("/api/orders/", ordersRouter);
 app.use("/api/reviews/", reviewsRouter);
 
-//Error Middlewar
-// app.use((e, req, res, next) => {
+//Error Middleware
+// app.use(( req, res, next) => {
 //   console.error(e);
 //   res.status(501).json({ message: e.message, error: e });
 // });

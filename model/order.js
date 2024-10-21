@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { itemSchema } from "./item.js";
 
 const orderSchema = new mongoose.Schema({
   order_id: {
@@ -23,8 +24,10 @@ const orderSchema = new mongoose.Schema({
   status: {
     type: String,
     enum: ["pending", "shipped", "delivered"],
+    default: "pending",
     required: true,
   },
+  items: [itemSchema],
 });
 
 const Order = new mongoose.model("Order", orderSchema);

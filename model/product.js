@@ -23,5 +23,9 @@ const productSchema = new mongoose.Schema({
   },
 });
 
+//Creating index
+productSchema.index({ category: 1 });
+productSchema.index({ product_id: 1 });
+
 const Product = new mongoose.model("Product", productSchema);
 export default Product;

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-// import Order from "../model/order.js";
 import { Router } from "express";
 import Order from "../model/order.js";
+import Item from "../model/item.js";
 
 const router = new Router();
 
@@ -84,6 +84,42 @@ router.put("/:id", async (req, res) => {
     }
   } catch (error) {
     console.error(`Invalid order id: ${req.params.id}`);
+  }
+});
+
+/**
+ * POST /api/orders/:id/items
+ */
+router.post("/:id/items", async (req, res, next) => {
+  try {
+    // Find the order by ID
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+      return res
+        .status(404)
+        .json({ message: `Order not found: ${req.params.id}` });
+    }
+
+    // Validate incoming item data
+    // const { item_id, quantity, price } = req.body;
+    // if (!item_id || quantity == null || price == null) {
+    //   return res.status(400).json({ message: "Missing required item fields: item_id, quantity, price." });
+    // }
+
+    // Create a new item
+    const item = await Item.create(req.body);
+
+    // Add the item to the order's items array
+    order.items.push(item);
+
+    // Save the updated order
+    await order.save();
+
+    // Return the updated order along with the newly created item
+    res.status(201).json({ order });
+  } catch (error) {
+    console.error("Error adding item to order:", error);
+    next(error);
   }
 });
 
