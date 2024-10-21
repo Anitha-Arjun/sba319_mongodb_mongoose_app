@@ -1,0 +1,1 @@
+Created a database named shoppingdb with 3 collections named products, orders and reviews using node, express and mongodb/mongoose. Created a CRUD API and indexes has been created on the category_id and product_id. Errors are handle by error handling middleware.

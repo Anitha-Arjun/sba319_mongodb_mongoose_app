@@ -34,10 +34,10 @@ app.use("/api/orders/", ordersRouter);
 app.use("/api/reviews/", reviewsRouter);
 
 //Error Middleware
-// app.use(( req, res, next) => {
-//   console.error(e);
-//   res.status(501).json({ message: e.message, error: e });
-// });
+app.use((req, res, next) => {
+  console.error(e);
+  res.status(501).json({ message: e.message, error: e });
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT} `);

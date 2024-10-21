@@ -26,7 +26,8 @@ router.get("/:id", async (req, res, next) => {
       res.status(404).json(`${req.params.id} is not found`);
     }
   } catch (error) {
-    console.log(`Error invalid id: ${req.params.id}`);
+    next(error);
+    // console.log(`Error invalid id: ${req.params.id}`);
   }
 });
 
@@ -34,7 +35,7 @@ router.get("/:id", async (req, res, next) => {
  * POST api/orders/
  */
 
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
   try {
     const newOrder = await Order.create(req.body);
     if (newOrder) {
@@ -43,14 +44,15 @@ router.post("/", async (req, res) => {
       res.json("Cannot create a new order");
     }
   } catch (error) {
-    console.error("error in creating new order");
+    next(error);
+    // console.error("error in creating new order");
   }
 });
 
 /**
  * DELETE /api/orders/:id
  */
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", async (req, res, next) => {
   try {
     const deleteOrder = await Order.findByIdAndDelete(req.params.id);
     if (deleteOrder) {
@@ -62,14 +64,15 @@ router.delete("/:id", async (req, res) => {
       res.json(`Error deleting the order: ${req.params.id}`);
     }
   } catch (error) {
-    console.error(`Invalid order id: ${req.params.id}`);
+    next(error);
+    // console.error(`Invalid order id: ${req.params.id}`);
   }
 });
 
 /**
  * PUT /api/orders/:id
  */
-router.put("/:id", async (req, res) => {
+router.put("/:id", async (req, res, next) => {
   try {
     const updateOrder = await Order.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -83,7 +86,8 @@ router.put("/:id", async (req, res) => {
       res.json(`Error updating the order: ${req.params.id}`);
     }
   } catch (error) {
-    console.error(`Invalid order id: ${req.params.id}`);
+    next(error);
+    // console.error(`Invalid order id: ${req.params.id}`);
   }
 });
 
@@ -92,7 +96,6 @@ router.put("/:id", async (req, res) => {
  */
 router.post("/:id/items", async (req, res, next) => {
   try {
-    // Find the order by ID
     const order = await Order.findById(req.params.id);
     if (!order) {
       return res
@@ -100,22 +103,20 @@ router.post("/:id/items", async (req, res, next) => {
         .json({ message: `Order not found: ${req.params.id}` });
     }
 
-    // Validate incoming item data
-    // const { item_id, quantity, price } = req.body;
-    // if (!item_id || quantity == null || price == null) {
-    //   return res.status(400).json({ message: "Missing required item fields: item_id, quantity, price." });
-    // }
+    // Validate - item data
+    const { item_id, quantity, price } = req.body;
+    if (!item_id || quantity == null || price == null) {
+      return res.status(400).json({
+        message: "Missing required item fields: item_id, quantity, price.",
+      });
+    }
 
-    // Create a new item
     const item = await Item.create(req.body);
 
-    // Add the item to the order's items array
     order.items.push(item);
 
-    // Save the updated order
     await order.save();
 
-    // Return the updated order along with the newly created item
     res.status(201).json({ order });
   } catch (error) {
     console.error("Error adding item to order:", error);
